@@ -17,20 +17,20 @@ services:
       ICECAST_LOCATION: "Strathclyde Uni, Glasgow, UK"
       ICECAST_HOSTNAME: stream.strathclydefusion.com
 
-   broadcast:
-     build: ./liquidsoap
-     volumes:
-       - ./config:/config
-       - ./playlists:/playlists
-     restart: always
-     links:
-       - icecast
-     command: /bin/bash -xc 'env; /supervisor.sh liquidsoap -v --debug /config/broadcast.liq'
-     environment:
-      ICECAST_SOURCE_PASSWORD:
-      HARBOR_PASSWORD:
-     ports:
-       - 5001
+  #  broadcast:
+  #    build: ./liquidsoap
+  #    volumes:
+  #      - ./config:/config
+  #      - ./playlists:/playlists
+  #    restart: always
+  #    links:
+  #      - icecast
+  #    command: /bin/bash -xc 'env; /supervisor.sh liquidsoap -v --debug /config/broadcast.liq'
+  #    environment:
+  #     ICECAST_SOURCE_PASSWORD:
+  #     HARBOR_PASSWORD:
+  #    ports:
+  #      - 5001
 
    main:
      build: ./liquidsoap
@@ -43,9 +43,11 @@ services:
      command: /bin/bash -xc 'env; /supervisor.sh liquidsoap -v --debug /config/main.liq'
      environment:
       LIVE_PASSWORD:
+      ICECAST_SOURCE_PASSWORD:
       HARBOR_PASSWORD:
      links:
-        - broadcast
+       - icecast
+        # - broadcast
      ports:
        - 8021:5001
        - 8022:5002

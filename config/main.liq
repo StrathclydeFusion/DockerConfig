@@ -83,15 +83,38 @@ mix = on_metadata(feedback, mix)
 
 
 # OUTPUTS
-mix = mksafe(mix)
-output.icecast(
-    password=my_getenv("HARBOR_PASSWORD"),
-    host="broadcast",
-    port=5001,
-    %wav,
-    mount="strath.main",
-    mix
-    )
+input = mksafe(mix)
+#output.icecast(
+#    password=my_getenv("HARBOR_PASSWORD"),
+#    host="broadcast",
+#    port=5001,
+#    %wav,
+#    mount="strath.main",
+#    mix
+#    )
+
+# FUNCTIONS
+scc_out = output.icecast(description="University of Strathclyde Student Radio", genre="Student Radio", url="http://www.strathclydefusion.com/")
+output_docker_env.icecast = scc_out(
+    host="icecast",
+    port=8000,
+    password=my_getenv("ICECAST_SOURCE_PASSWORD")
+)
+
+def outputs(encoder, ~mount, input)
+    output_docker_env.icecast(encoder, mount=mount, input)
+end
+
+
+# OUTPUTS
+outputs(%mp3(bitrate=64), mount="/strath-radio-64.mp3", input)
+outputs(%mp3(bitrate=128), mount="/strath-radio-128.mp3", input)
+outputs(%mp3(bitrate=160), mount="/strath-radio-160.mp3", input)
+outputs(%mp3(bitrate=192), mount="/strath-radio-192.mp3", input)
+#outputs(%aac(bitrate=128), mount="/strath-radio-128.aac", input)
+#outputs(%aac(bitrate=160), mount="/strath-radio-160.aac", input)
+#outputs(%aac(bitrate=192), mount="/strath-radio-192.aac", input)
+outputs(%vorbis, mount="/strath-radio.ogg", input)
 
 #title = '%Y-%m-%d, %H:%M:%S - $(if $(artist), "$(artist)", "Artiste inconnu") - $(if $(title),"$(title)", "Emission inconnue")'
 #output.file(

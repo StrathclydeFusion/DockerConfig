@@ -13,7 +13,7 @@ services:
       ICECAST_ADMIN_PASSWORD:
       ICECAST_ADMIN_USERNAME: admin
       ICECAST_SOURCE_LIMIT: 10
-      ICECAST_ADMIN_EMAIL: manager@strathclydefusion.com
+      ICECAST_ADMIN_EMAIL: info@strathclydefusion.com
       ICECAST_LOCATION: "Strathclyde Uni, Glasgow, UK"
       ICECAST_HOSTNAME: stream.strathclydefusion.com
 
